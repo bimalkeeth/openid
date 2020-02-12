@@ -19,8 +19,27 @@ class Auth{
    };
 
   handleAuthentication=history=>{
-      this.auth0.parseHash((err,))
+      this.auth0.parseHash((err,authResult)=>{
+          if(authResult && authResult.accessToken && authResult.idToken){
+              this.setSession(authResult);
+              this.history("/");
+          }else if(err){
+              this.history("/")
+          }
+      })
 
+  }
+
+  setSession(authResult) {
+        const expireAt=JSON.stringify(authResult.expiresIn *1000 + new Date().getTime())
+        localStorage.setItem("access_token",authResult.access_token);
+        localStorage.setItem("id_token",authResult.id_token);
+        localStorage.setItem("expires_at",expireAt);
+  }
+
+  isAuthenticated(){
+      const expiresAt=JSON.stringify(localStorage.getItem("expires_at"));
+      return new Date().getTime()<expiresAt;
   }
 
 }
