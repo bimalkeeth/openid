@@ -18,7 +18,7 @@ class  App extends Component{
    render() {
        return (
            <>
-               <NavBar/>
+               <NavBar auth={this.auth}/>
                <Route path="/" exact render={props=><Home auth={this.auth}{...props}/>}/>
                <Route path="/callback"  render={props=><CallBack auth={this.auth}{...props}/>}/>
                <Route path="/profile" exact render={props=><Profile auth={this.auth}{...props}/>}/>

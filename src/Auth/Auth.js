@@ -28,7 +28,7 @@ class Auth{
           }
       })
 
-  }
+  };
 
   setSession(authResult) {
         const expireAt=JSON.stringify(authResult.expiresIn *1000 + new Date().getTime())
@@ -40,6 +40,16 @@ class Auth{
   isAuthenticated(){
       const expiresAt=JSON.stringify(localStorage.getItem("expires_at"));
       return new Date().getTime()<expiresAt;
+  }
+  logout=()=>{
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("expires_at");
+      this.auth0.logout({
+         clientID:process.env.REACT_APP_AUTH_CLIENT_ID,
+         returnTo:"http://localhost:3000"
+      });
+
   }
 
 }
